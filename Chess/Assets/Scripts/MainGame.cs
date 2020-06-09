@@ -25,17 +25,20 @@ public class MainGame : MonoBehaviour
     //6 = queen
 
     //TODO make pieces different colors
+
     int[,] initialState = new int[,]
     {
-        {2, 3, 4, 6, 5, 4, 3, 2 },
-        {1, 1, 1, 1, 1, 1, 1, 1 },
-        {0, 0, 0, 0, 0, 0, 0, 0 },
-        {0, 0, 0, 0, 0, 0, 0, 0 },
-        {0, 0, 0, 0, 0, 0, 0, 0 },
-        {0, 0, 0, 0, 0, 0, 0, 0 },
-        {1, 1, 1, 1, 1, 1, 1, 1 },
-        {2, 3, 4, 6, 5, 4, 3, 2 }
-    };
+        { 2, 3, 4, 5, 6, 4, 3, 2 },
+        { 1, 1, 1, 1, 1, 1, 1, 1 },
+        { 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 1, 1, 1, 1, 1, 1, 1, 1 },
+        { 2, 3, 4, 5, 6, 4, 3, 2 }
+    };// Bottom rows are white peices
+
+    //TODO rewrite to include black and white peices in initial board layout. 
 
 
     void InitializeBoard()
@@ -47,7 +50,7 @@ public class MainGame : MonoBehaviour
         {
             for (int j = 0; j < 8; j++)
             {
-                COLOR color = COLOR.WHITE;
+                COLOR color = i <= 4 ? COLOR.BLACK : COLOR.WHITE;//fix this
 
                 switch(initialState[i, j])
                 {
@@ -124,11 +127,12 @@ public class MainGame : MonoBehaviour
                 ChessPiece peice = state.boardState[r, c];
                 if (peice != null)
                 {
-                    GameObject peiceModel = createPeice(peice.peiceType, peice.pieceColor);
+                    GameObject peiceModel = createPeice(peice.peiceType, peice.peiceColor);
                     //Move the peice to the correct location
                     peiceModel.transform.Translate(new Vector3(2 * (c - 4) + 1, 0, 2 * (r - 4) + 1));
-                    peiceModel.transform.Rotate(-90, 0, 0);
+                    peiceModel.transform.Rotate(-90, peice.peiceRotation + (peice.peiceColor == COLOR.BLACK ? 180 : 0), 0);
                     peiceModel.transform.localScale = new Vector3(200, 200, 200);
+                    peice.peiceModel = peiceModel;
                 }
                 
 

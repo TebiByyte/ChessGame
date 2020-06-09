@@ -17,6 +17,7 @@ namespace Assets.Scripts.Peices
 
         public King(COLOR color) : base(color, TYPE.KING)
         {
+            this.peiceRotation = 90.0f;
         }
     }
 }

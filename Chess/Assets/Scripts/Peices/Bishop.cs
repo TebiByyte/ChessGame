@@ -17,6 +17,7 @@ namespace Assets.Scripts.Peices
 
         public Bishop(COLOR color) : base(color, TYPE.BISHOP)
         {
+            this.peiceRotation = 90.0f;
         }
     }
 }
