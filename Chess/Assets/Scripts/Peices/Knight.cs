@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Assets.Scripts.Peices
 {
     class Knight : ChessPiece
     {
-        public override List<Tuple<int, int>> getMoves(GameState state)
+        public override List<Vector2> getMoves(GameState state)
         {
 
 

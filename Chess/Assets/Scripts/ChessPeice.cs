@@ -14,7 +14,7 @@ public abstract class ChessPiece
     public float peiceRotation { get; protected set; }
     public Vector2 peicePosition { get; set; }
 
-    public abstract List<Tuple<int, int>> getMoves(GameState state);
+    public abstract List<Vector2> getMoves(GameState state);
 
     protected bool isInRange(int r, int c)
     {

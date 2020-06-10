@@ -6,6 +6,9 @@ public class CameraController : MonoBehaviour
 {
 
     public float horizontalSpeed = 2.0f;
+    public float verticalSpeed = 2.0f;
+    private float yaw;
+    private float pitch;
 
     //TODO Get peice selection working
 
@@ -18,12 +21,20 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float h = horizontalSpeed * Input.GetAxis("Mouse X");
-
         if (Input.GetMouseButton(1))
         {
+            yaw += horizontalSpeed * Input.GetAxis("Mouse X");
+
+            if (pitch < 90 && pitch > -90) {
+                pitch += verticalSpeed * Input.GetAxis("Mouse Y");
+            }
+            else
+            {
+                pitch = Mathf.Sign(pitch) * 89.9f;
+            }
+
             Cursor.lockState = CursorLockMode.Locked;
-            transform.Rotate(0, h, 0);
+            transform.eulerAngles = new Vector3(pitch, yaw, 0);
         }
         else
         {
