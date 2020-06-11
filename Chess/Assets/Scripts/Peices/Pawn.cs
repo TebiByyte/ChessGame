@@ -14,7 +14,8 @@ namespace Assets.Scripts.Peices
             List<Vector2> results = new List<Vector2>();
 
             //Placeholder
-            Vector2 candidate = this.peicePosition + new Vector2(-1, 0);
+            float sign = peiceColor == COLOR.WHITE ? -1 : 1;
+            Vector2 candidate = this.peicePosition + new Vector2(sign, 0);
 
             if (GameState.squareIsOnBoard(candidate) && !state.squareFilled((int)candidate.x, (int)candidate.y))
             {

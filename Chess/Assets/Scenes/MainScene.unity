@@ -150,6 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   horizontalSpeed: 2
+  verticalSpeed: 2
 --- !u!4 &312926651
 Transform:
   m_ObjectHideFlags: 0
@@ -306,7 +307,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.1
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -366,6 +367,8 @@ MonoBehaviour:
     type: 3}
   WhiteMat: {fileID: 2100000, guid: 1bd2a9d8d23affd4ca7ede5690a6f572, type: 2}
   BlackMat: {fileID: 2100000, guid: 8b7c09baf3f97c64092fa796f3468884, type: 2}
+  SelectedMaterial: {fileID: 2100000, guid: 426ec46e2332cb744baf9409c4bff7a4, type: 2}
+  camera: {fileID: 963194227}
 --- !u!1001 &1859952502
 PrefabInstance:
   m_ObjectHideFlags: 0
