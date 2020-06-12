@@ -24,9 +24,7 @@ namespace Assets.Scripts.Peices
 
             foreach (Vector2 candidateMove in candidateMoves)
             {
-                ChessPiece squareStatus = GameState.squareIsOnBoard(candidateMove) ? state.boardState[(int)candidateMove.x, (int)candidateMove.y] : null;
-
-                if (GameState.squareIsOnBoard(candidateMove) && squareStatus == null || (squareStatus != null && squareStatus.peiceColor != this.peiceColor)) 
+                if (state.canMoveTo(candidateMove, this.peiceColor))
                 {
                     results.Add(candidateMove);
                 }

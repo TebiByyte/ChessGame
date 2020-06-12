@@ -11,9 +11,30 @@ namespace Assets.Scripts.Peices
     {
         public override List<Vector2> getMoves(GameState state)
         {
+            List<Vector2> results = new List<Vector2>();
+            List<Vector2> candidateMoves = new List<Vector2>();
+            candidateMoves.Add(this.peicePosition + new Vector2(1, 2));
+            candidateMoves.Add(this.peicePosition + new Vector2(1, -2));
+            candidateMoves.Add(this.peicePosition + new Vector2(-1, 2));
+            candidateMoves.Add(this.peicePosition + new Vector2(-1, -2));
 
+            candidateMoves.Add(this.peicePosition + new Vector2(2, 1));
+            candidateMoves.Add(this.peicePosition + new Vector2(2, -1));
+            candidateMoves.Add(this.peicePosition + new Vector2(-2, 1));
+            candidateMoves.Add(this.peicePosition + new Vector2(-2, -1));
 
-            throw new NotImplementedException();
+            foreach (Vector2 candidateMove in candidateMoves)
+            {
+                ChessPiece squareStatus = GameState.squareIsOnBoard(candidateMove) ? state.boardState[(int)candidateMove.x, (int)candidateMove.y] : null;
+
+                if (state.canMoveTo(candidateMove, this.peiceColor))
+                {
+                    results.Add(candidateMove);
+                }
+            }
+
+            return results;
+            
         }
 
         public Knight(COLOR color) : base(color, TYPE.KNIGHT)

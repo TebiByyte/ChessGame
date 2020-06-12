@@ -6,8 +6,11 @@ public class GameState
 {
     public ChessPiece[,] boardState;
 
-    public bool squareFilled(int row, int col)
+    public bool squareFilled(Vector2 square)
     {
+        int row = (int)square.x;
+        int col = (int)square.y;
+
         return boardState[row, col] != null;
     }
 
@@ -36,6 +39,11 @@ public class GameState
                 }
             }
         }
+    }
+
+    public bool canMoveTo(Vector2 to, COLOR color)
+    {
+        return squareIsOnBoard(to) && (squareFilled(to) && boardState[(int)to.x, (int)to.y].peiceColor != color || !squareFilled(to));
     }
 
     public static bool squareIsOnBoard(Vector2 square)

@@ -27,7 +27,7 @@ namespace Assets.Scripts.Peices
 
             foreach (Vector2 candidateMove in candidateMoves)
             {
-                if (GameState.squareIsOnBoard(candidateMove) && !state.squareFilled((int)candidateMove.x, (int)candidateMove.y))
+                if (GameState.squareIsOnBoard(candidateMove) && !state.squareFilled(candidateMove))
                 {
                     results.Add(candidateMove);
                 }
