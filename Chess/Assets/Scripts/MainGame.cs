@@ -216,6 +216,7 @@ public class MainGame : MonoBehaviour
                     }
 
                     updateBoard();
+                    state.enableAll();
 
                     movePreviews = null;
 
@@ -244,6 +245,10 @@ public class MainGame : MonoBehaviour
                 {
                     GameObject peice = createPeice(selectedPeice.peiceType, selectedPeice.peiceColor);
                     movePreviews.Add(peice);
+                    if (state.boardState[(int)peiceChoice.x, (int)peiceChoice.y] != null)
+                    {
+                        state.boardState[(int)peiceChoice.x, (int)peiceChoice.y].peiceModel.SetActive(false);
+                    }
 
                     peice.transform.position = getPosition(peiceChoice);
                     peice.transform.Rotate(-90, selectedPeice.peiceRotation + (selectedPeice.peiceColor == COLOR.BLACK ? 180 : 0), 0);

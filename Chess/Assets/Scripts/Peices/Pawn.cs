@@ -13,13 +13,24 @@ namespace Assets.Scripts.Peices
         {
             List<Vector2> results = new List<Vector2>();
 
-            //Placeholder
+            List<Vector2> candidateMoves = new List<Vector2>();
+
+
             float sign = peiceColor == COLOR.WHITE ? -1 : 1;
             Vector2 candidate = this.peicePosition + new Vector2(sign, 0);
+            candidateMoves.Add(candidate);
 
-            if (GameState.squareIsOnBoard(candidate) && !state.squareFilled((int)candidate.x, (int)candidate.y))
+            if ((this.peicePosition.x == 6 && this.peiceColor == COLOR.WHITE) || (this.peicePosition.x == 1 && this.peiceColor == COLOR.BLACK))
             {
-                results.Add(candidate);
+                candidateMoves.Add(this.peicePosition + new Vector2(2 * sign, 0));
+            }
+
+            foreach (Vector2 candidateMove in candidateMoves)
+            {
+                if (GameState.squareIsOnBoard(candidateMove) && !state.squareFilled((int)candidateMove.x, (int)candidateMove.y))
+                {
+                    results.Add(candidateMove);
+                }
             }
 
             return results;
