@@ -206,56 +206,77 @@ public class MainGame : MonoBehaviour
                     state.movePeice(fromR, fromC, toR, toC);
                     selectedPeice.peicePosition = to;
                     selectedPeice.peiceModel.GetComponent<PeiceComponent>().boardPosition = to;
+                    state.turn = state.turn == COLOR.WHITE ? COLOR.BLACK : COLOR.WHITE;
 
                     selectedPeice = null;
                     moves = null;
 
-                    foreach (GameObject g in movePreviews)
+                    if (movePreviews != null)
                     {
-                        Destroy(g);
-                    }
+                        foreach (GameObject g in movePreviews)
+                        {
+                            Destroy(g);
+                        }
 
-                    updateBoard();
-                    state.enableAll();
+                        updateBoard();
+                        state.enableAll();
 
-                    movePreviews = null;
-
-                    return;
-                }
-
-                Vector2 boardPos = hit.transform.GetComponent<PeiceComponent>().boardPosition;
-                int row = (int)boardPos.x;
-                int col = (int)boardPos.y;
-
-                selectedPeice = state.boardState[row, col];
-
-                if (movePreviews != null)
-                {
-                    foreach (GameObject g in movePreviews)
-                    {
-                        Destroy(g);
+                        movePreviews = null;
                     }
                 }
-
-                List<Vector2> peiceMoves = selectedPeice.getMoves(state);
-                movePreviews = new List<GameObject>();
-                moves = peiceMoves;
-
-                foreach (Vector2 peiceChoice in peiceMoves)
+                else
                 {
-                    GameObject peice = createPeice(selectedPeice.peiceType, selectedPeice.peiceColor);
-                    movePreviews.Add(peice);
-                    if (state.boardState[(int)peiceChoice.x, (int)peiceChoice.y] != null)
+                    if (movePreviews != null)
                     {
-                        state.boardState[(int)peiceChoice.x, (int)peiceChoice.y].peiceModel.SetActive(false);
+                        foreach (GameObject g in movePreviews)
+                        {
+                            Destroy(g);
+                        }
+
+                        updateBoard();
+                        state.enableAll();
+
+                        movePreviews = null;
                     }
 
-                    peice.transform.position = getPosition(peiceChoice);
-                    peice.transform.Rotate(-90, selectedPeice.peiceRotation + (selectedPeice.peiceColor == COLOR.BLACK ? 180 : 0), 0);
-                    peice.transform.localScale = new Vector3(200, 200, 200);
-                    peice.GetComponent<Renderer>().material = SelectedMaterial;
-                    peice.GetComponent<PeiceComponent>().boardPosition = peiceChoice;
-                    peice.name = "PREVIEW";
+                    Vector2 boardPos = hit.transform.GetComponent<PeiceComponent>().boardPosition;
+                    int row = (int)boardPos.x;
+                    int col = (int)boardPos.y;
+
+                    if (state.boardState[row, col].peiceColor == state.turn)
+                    {
+                        selectedPeice = state.boardState[row, col];
+
+                        if (movePreviews != null)
+                        {
+                            foreach (GameObject g in movePreviews)
+                            {
+                                Destroy(g);
+                            }
+                        }
+
+                        List<Vector2> peiceMoves = selectedPeice.getMoves(state);
+                        movePreviews = new List<GameObject>();
+                        moves = peiceMoves;
+
+                        foreach (Vector2 peiceChoice in peiceMoves)
+                        {
+                            GameObject peice = createPeice(selectedPeice.peiceType, selectedPeice.peiceColor);
+                            movePreviews.Add(peice);
+                            if (state.boardState[(int)peiceChoice.x, (int)peiceChoice.y] != null)
+                            {
+                                state.boardState[(int)peiceChoice.x, (int)peiceChoice.y].peiceModel.SetActive(false);
+                            }
+
+                            peice.transform.position = getPosition(peiceChoice);
+                            peice.transform.Rotate(-90, selectedPeice.peiceRotation + (selectedPeice.peiceColor == COLOR.BLACK ? 180 : 0), 0);
+                            peice.transform.localScale = new Vector3(200, 200, 200);
+                            peice.GetComponent<Renderer>().material = SelectedMaterial;
+                            peice.GetComponent<PeiceComponent>().boardPosition = peiceChoice;
+                            peice.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                            peice.name = "PREVIEW";
+                        }
+                    }
                 }
             }
         }

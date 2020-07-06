@@ -13,6 +13,7 @@ public abstract class ChessPiece
     public GameObject peiceModel { get; set; }
     public float peiceRotation { get; protected set; }
     public Vector2 peicePosition { get; set; }
+    public Move lastMove;
 
     public abstract List<Vector2> getMoves(GameState state);
 

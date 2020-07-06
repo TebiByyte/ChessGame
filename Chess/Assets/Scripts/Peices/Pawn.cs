@@ -25,6 +25,22 @@ namespace Assets.Scripts.Peices
                 candidateMoves.Add(this.peicePosition + new Vector2(2 * sign, 0));
             }
 
+            Vector2 takeLeft = this.peicePosition + new Vector2(sign, -1);
+            Vector2 takeRight = this.peicePosition + new Vector2(sign, 1);
+            COLOR oppositeColor = this.peiceColor == COLOR.WHITE ? COLOR.BLACK : COLOR.WHITE;
+            
+            if (GameState.squareIsOnBoard(takeLeft) && state.squareFilled(takeLeft) 
+                && state.boardState[(int)takeLeft.x, (int)takeLeft.y].peiceColor == oppositeColor)
+            {
+                results.Add(takeLeft);
+            }
+
+            if (GameState.squareIsOnBoard(takeRight) && state.squareFilled(takeRight)
+                && state.boardState[(int)takeRight.x, (int)takeRight.y].peiceColor == oppositeColor)
+            {
+                results.Add(takeRight);
+            }
+
             foreach (Vector2 candidateMove in candidateMoves)
             {
                 if (GameState.squareIsOnBoard(candidateMove) && !state.squareFilled(candidateMove))
