@@ -203,6 +203,32 @@ public class MainGame : MonoBehaviour
                     int fromR = (int)selectedPeice.peicePosition.x;
                     int fromC = (int)selectedPeice.peicePosition.y;
 
+                    if (state.boardState[fromR, fromC].peiceType == TYPE.KING && toC == fromC - 2)
+                    {
+                        int rookR = fromR;
+                        int rookC = fromC - 3;
+                        ChessPiece rook = state.boardState[rookR, rookC];
+
+
+                        state.movePeice(rookR, rookC, fromR, fromC - 1);
+                        rook.peicePosition = new Vector2(fromR, fromC - 1);
+                        rook.peiceModel.GetComponent<PeiceComponent>().boardPosition = new Vector2(fromR, fromC - 1);
+                        updateBoard();
+                    }
+
+                    if (state.boardState[fromR, fromC].peiceType == TYPE.KING && toC == fromC + 2)
+                    {
+                        int rookR = fromR;
+                        int rookC = fromC + 4;
+                        ChessPiece rook = state.boardState[rookR, rookC];
+
+
+                        state.movePeice(rookR, rookC, fromR, fromC + 1);
+                        rook.peicePosition = new Vector2(fromR, fromC + 1);
+                        rook.peiceModel.GetComponent<PeiceComponent>().boardPosition = new Vector2(fromR, fromC + 1);
+                        updateBoard();
+                    }
+
                     state.movePeice(fromR, fromC, toR, toC);
                     selectedPeice.peicePosition = to;
                     selectedPeice.peiceModel.GetComponent<PeiceComponent>().boardPosition = to;
