@@ -186,6 +186,11 @@ public class MainGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Debug.Log(state.inCheck(state.turn));
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
@@ -203,6 +208,7 @@ public class MainGame : MonoBehaviour
                     int fromR = (int)selectedPeice.peicePosition.x;
                     int fromC = (int)selectedPeice.peicePosition.y;
 
+                    //Kingside castle
                     if (state.boardState[fromR, fromC].peiceType == TYPE.KING && toC == fromC - 2)
                     {
                         int rookR = fromR;
@@ -216,6 +222,7 @@ public class MainGame : MonoBehaviour
                         updateBoard();
                     }
 
+                    //Queenside castle
                     if (state.boardState[fromR, fromC].peiceType == TYPE.KING && toC == fromC + 2)
                     {
                         int rookR = fromR;
@@ -227,6 +234,16 @@ public class MainGame : MonoBehaviour
                         rook.peicePosition = new Vector2(fromR, fromC + 1);
                         rook.peiceModel.GetComponent<PeiceComponent>().boardPosition = new Vector2(fromR, fromC + 1);
                         updateBoard();
+                    }
+
+                    //That weird pawn move where you can take without landing on a pieces square
+                    if (state.boardState[fromR, fromC].peiceType == TYPE.PAWN)
+                    {
+                        if (Math.Abs(fromC - toC) == 1 && state.boardState[toR, toC] == null)
+                        {
+                            int side = fromC - toC;
+                            state.removePiece(new Vector2(fromR, fromC - side));
+                        }
                     }
 
                     state.movePeice(fromR, fromC, toR, toC);
@@ -285,22 +302,41 @@ public class MainGame : MonoBehaviour
                         movePreviews = new List<GameObject>();
                         moves = peiceMoves;
 
+                        GameState testState = state.copyBoardState();
+
+
+
                         foreach (Vector2 peiceChoice in peiceMoves)
                         {
-                            GameObject peice = createPeice(selectedPeice.peiceType, selectedPeice.peiceColor);
-                            movePreviews.Add(peice);
-                            if (state.boardState[(int)peiceChoice.x, (int)peiceChoice.y] != null)
+                            //Filter every move to make sure it does not put that side into check
+
+                            Vector2 currentPeicePos = selectedPeice.peicePosition;
+
+                            testState.movePeice((int)currentPeicePos.x, (int)currentPeicePos.y, (int)peiceChoice.x, (int)peiceChoice.y);
+
+
+
+                            if (!testState.inCheck(state.turn))
                             {
-                                state.boardState[(int)peiceChoice.x, (int)peiceChoice.y].peiceModel.SetActive(false);
+
+                                GameObject peice = createPeice(selectedPeice.peiceType, selectedPeice.peiceColor);
+                                movePreviews.Add(peice);
+                                if (state.boardState[(int)peiceChoice.x, (int)peiceChoice.y] != null)
+                                {
+                                    state.boardState[(int)peiceChoice.x, (int)peiceChoice.y].peiceModel.SetActive(false);
+                                }
+
+                                peice.transform.position = getPosition(peiceChoice);
+                                peice.transform.Rotate(-90, selectedPeice.peiceRotation + (selectedPeice.peiceColor == COLOR.BLACK ? 180 : 0), 0);
+                                peice.transform.localScale = new Vector3(200, 200, 200);
+                                peice.GetComponent<Renderer>().material = SelectedMaterial;
+                                peice.GetComponent<PeiceComponent>().boardPosition = peiceChoice;
+                                peice.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                                peice.name = "PREVIEW";
                             }
 
-                            peice.transform.position = getPosition(peiceChoice);
-                            peice.transform.Rotate(-90, selectedPeice.peiceRotation + (selectedPeice.peiceColor == COLOR.BLACK ? 180 : 0), 0);
-                            peice.transform.localScale = new Vector3(200, 200, 200);
-                            peice.GetComponent<Renderer>().material = SelectedMaterial;
-                            peice.GetComponent<PeiceComponent>().boardPosition = peiceChoice;
-                            peice.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-                            peice.name = "PREVIEW";
+                            //Move the piece back to it's original position
+                            testState.movePeice((int)peiceChoice.x, (int)peiceChoice.y, (int)currentPeicePos.x, (int)currentPeicePos.y);
                         }
                     }
                 }

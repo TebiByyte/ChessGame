@@ -41,6 +41,31 @@ namespace Assets.Scripts.Peices
                 results.Add(takeRight);
             }
 
+            Vector2 left = this.peicePosition + new Vector2(0, -1);
+            Vector2 right = this.peicePosition + new Vector2(0, 1);
+
+            if (GameState.squareIsOnBoard(left) && state.squareFilled(left))
+            {
+                ChessPiece toLeft = state.boardState[(int)left.x, (int)left.y];
+
+                if (toLeft.peiceType == TYPE.PAWN && Math.Abs(toLeft.lastMove.fromRow - toLeft.lastMove.toRow) == 2 &&
+                    toLeft.lastMove.fromRow == state.lastMove.fromRow && toLeft.lastMove.fromCol == state.lastMove.fromCol)
+                {
+                    candidateMoves.Add(takeLeft);
+                }
+            }
+
+            if (GameState.squareIsOnBoard(right) && state.squareFilled(right))
+            {
+                ChessPiece toRight = state.boardState[(int)right.x, (int)right.y];
+
+                if (toRight.peiceType == TYPE.PAWN && Math.Abs(toRight.lastMove.fromRow - toRight.lastMove.toRow) == 2 &&
+                    toRight.lastMove.fromRow == state.lastMove.fromRow && toRight.lastMove.fromCol == state.lastMove.fromCol)
+                {
+                    candidateMoves.Add(takeRight);
+                }
+            }
+
             foreach (Vector2 candidateMove in candidateMoves)
             {
                 if (GameState.squareIsOnBoard(candidateMove) && !state.squareFilled(candidateMove))

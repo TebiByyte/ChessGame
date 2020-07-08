@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Peices
 {
-    class Knight : ChessPiece
+    public class Knight : ChessPiece
     {
         public override List<Vector2> getMoves(GameState state)
         {
