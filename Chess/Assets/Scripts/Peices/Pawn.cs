@@ -20,7 +20,8 @@ namespace Assets.Scripts.Peices
             Vector2 candidate = this.peicePosition + new Vector2(sign, 0);
             candidateMoves.Add(candidate);
 
-            if ((this.peicePosition.x == 6 && this.peiceColor == COLOR.WHITE) || (this.peicePosition.x == 1 && this.peiceColor == COLOR.BLACK))
+            if (!state.squareFilled(peicePosition + new Vector2(sign, 0)) &&  
+               ((this.peicePosition.x == 6 && this.peiceColor == COLOR.WHITE) || (this.peicePosition.x == 1 && this.peiceColor == COLOR.BLACK)))
             {
                 candidateMoves.Add(this.peicePosition + new Vector2(2 * sign, 0));
             }

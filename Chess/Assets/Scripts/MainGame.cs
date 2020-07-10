@@ -181,6 +181,7 @@ public class MainGame : MonoBehaviour
     {
         InitializeBoard();
         DrawBoard();
+        //testState = state.copyBoardState();
     }
 
     // Update is called once per frame
@@ -188,7 +189,7 @@ public class MainGame : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Debug.Log(state.inCheck(state.turn));
+            Debug.Log(state.inCheck(COLOR.WHITE));
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -199,6 +200,7 @@ public class MainGame : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
+
 
                 if (hit.transform.name == "PREVIEW")
                 {
@@ -302,21 +304,18 @@ public class MainGame : MonoBehaviour
                         movePreviews = new List<GameObject>();
                         moves = peiceMoves;
 
-                        GameState testState = state.copyBoardState();
-
-
-
                         foreach (Vector2 peiceChoice in peiceMoves)
                         {
                             //Filter every move to make sure it does not put that side into check
+                            //For some reason the king is bugged
+                            //I think this has to do with the copied board state. 
 
                             Vector2 currentPeicePos = selectedPeice.peicePosition;
-
+                            GameState testState = state.copyBoardState();
                             testState.movePeice((int)currentPeicePos.x, (int)currentPeicePos.y, (int)peiceChoice.x, (int)peiceChoice.y);
+                            testState.boardState[(int)peiceChoice.x, (int)peiceChoice.y].peicePosition = peiceChoice;
 
-
-
-                            if (!testState.inCheck(state.turn))
+                            if (!testState.inCheck(testState.turn))
                             {
 
                                 GameObject peice = createPeice(selectedPeice.peiceType, selectedPeice.peiceColor);
@@ -335,8 +334,6 @@ public class MainGame : MonoBehaviour
                                 peice.name = "PREVIEW";
                             }
 
-                            //Move the piece back to it's original position
-                            testState.movePeice((int)peiceChoice.x, (int)peiceChoice.y, (int)currentPeicePos.x, (int)currentPeicePos.y);
                         }
                     }
                 }

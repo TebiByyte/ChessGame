@@ -81,9 +81,8 @@ public class GameState
 
         foreach (Move move in moves)
         {
-            if (move.toRow == (int)kingPosition.x && move.toCol == (int)kingPosition.y)
+            if (move.toRow == kingPosition.x && move.toCol == kingPosition.y)
             {
-                Debug.Log("In check");
                 result = true;
                 break;
             }
@@ -175,10 +174,10 @@ public class GameState
                         case (TYPE.QUEEN):
                             toAdd = new Queen(color);
                             break;
-                        default:
-                            break;
                     }
 
+                    toAdd.peicePosition = new Vector2(r, c);
+                    toAdd.lastMove = this.boardState[r, c].lastMove;
                     result.boardState[r, c] = toAdd;
                 }
             }
