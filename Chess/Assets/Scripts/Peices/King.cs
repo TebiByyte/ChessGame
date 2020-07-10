@@ -25,6 +25,7 @@ namespace Assets.Scripts.Peices
             if (this.lastMove.fromCol == 0 && this.lastMove.fromRow == 0 && this.lastMove.toCol == 0 && this.lastMove.toRow == 0)
             {
                 //King side castling
+
                 if (GameState.squareIsOnBoard(peicePosition + new Vector2(0, -3)))
                 {
                     ChessPiece piece = state.boardState[(int)peicePosition.x, (int)peicePosition.y - 3];

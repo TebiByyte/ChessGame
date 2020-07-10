@@ -91,6 +91,19 @@ public class GameState
         return result;
     }
 
+    public bool isCheckmate(COLOR color)
+    {
+        bool result = false;
+
+        if (inCheck(color))
+        {
+            List<Move> moves = getAllMoves(color);
+
+        }
+
+        return result;
+    }
+
     public King getKing(COLOR color)
     {
         for (int r = 0; r < 8; r++)

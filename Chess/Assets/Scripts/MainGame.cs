@@ -176,12 +176,26 @@ public class MainGame : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void beginGame()
     {
         InitializeBoard();
         DrawBoard();
-        //testState = state.copyBoardState();
+    }
+
+    public void clearBoard()
+    {
+        for (int r = 0; r < 8; r++)
+        {
+            for (int c = 0; c < 8; c++)
+            {
+                ChessPiece peice = state.boardState[r, c];
+                if (peice != null)
+                {
+                    Destroy(peice.peiceModel);
+                    state.boardState[r, c] = null;
+                }
+            }
+        }
     }
 
     // Update is called once per frame
