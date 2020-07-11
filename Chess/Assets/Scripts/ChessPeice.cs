@@ -17,17 +17,7 @@ public abstract class ChessPiece
 
     public abstract List<Vector2> getMoves(GameState state);
 
-    protected bool isInRange(int r, int c)
-    {
-        bool result = false;
-
-        if (r <= 0 && r < 8 && c <= 0 && c < 8)
-        {
-            result = true;
-        }
-
-        return result;
-    }
+    public abstract List<Vector2> getControlledSquares(GameState state);
 
     public ChessPiece(COLOR color, TYPE peiceType)
     {

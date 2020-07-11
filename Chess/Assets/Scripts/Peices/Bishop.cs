@@ -35,6 +35,11 @@ namespace Assets.Scripts.Peices
             return results;
         }
 
+        public override List<Vector2> getControlledSquares(GameState state)
+        {
+            return getMoves(state);
+        }
+
         public Bishop(COLOR color) : base(color, TYPE.BISHOP)
         {
             this.peiceRotation = 90.0f;

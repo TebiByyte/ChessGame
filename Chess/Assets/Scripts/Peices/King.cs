@@ -25,12 +25,25 @@ namespace Assets.Scripts.Peices
             if (this.lastMove.fromCol == 0 && this.lastMove.fromRow == 0 && this.lastMove.toCol == 0 && this.lastMove.toRow == 0)
             {
                 //King side castling
-
                 if (GameState.squareIsOnBoard(peicePosition + new Vector2(0, -3)))
                 {
                     ChessPiece piece = state.boardState[(int)peicePosition.x, (int)peicePosition.y - 3];
+                    List<Vector2> controlledSquares = state.getControlledSquares(peiceColor == COLOR.WHITE ? COLOR.BLACK : COLOR.WHITE);
+                    bool checkConstraint = !state.inCheck(peiceColor);
 
-                    if (!state.squareFilled(this.peicePosition - new Vector2(0, 1)) &&
+                    if (checkConstraint)
+                    {
+                        foreach (Vector2 s in controlledSquares)
+                        {
+                            if (s == this.peicePosition - new Vector2(0, 1))
+                            {
+                                checkConstraint = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (checkConstraint && !state.squareFilled(this.peicePosition - new Vector2(0, 1)) &&
                         !state.squareFilled(this.peicePosition - new Vector2(0, 2)) &&
                         state.squareFilled(this.peicePosition - new Vector2(0, 3)) &&
                         piece.lastMove.fromCol == 0 && piece.lastMove.fromRow == 0 && piece.lastMove.toCol == 0 && piece.lastMove.toRow == 0)
@@ -43,8 +56,22 @@ namespace Assets.Scripts.Peices
                 if (GameState.squareIsOnBoard(peicePosition + new Vector2(0, 4)))
                 {
                     ChessPiece piece = state.boardState[(int)peicePosition.x, (int)peicePosition.y + 4];
+                    List<Vector2> controlledSquares = state.getControlledSquares(peiceColor == COLOR.WHITE ? COLOR.BLACK : COLOR.WHITE);
+                    bool checkConstraint = !state.inCheck(peiceColor);
 
-                    if (!state.squareFilled(this.peicePosition + new Vector2(0, 1)) &&
+                    if (checkConstraint)
+                    {
+                        foreach (Vector2 s in controlledSquares)
+                        {
+                            if (s == this.peicePosition + new Vector2(0, 1))
+                            {
+                                checkConstraint = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (checkConstraint && !state.squareFilled(this.peicePosition + new Vector2(0, 1)) &&
                         !state.squareFilled(this.peicePosition + new Vector2(0, 2)) &&
                         !state.squareFilled(this.peicePosition + new Vector2(0, 3)) &&
                         state.squareFilled(this.peicePosition + new Vector2(0, 4)) &&
@@ -54,6 +81,30 @@ namespace Assets.Scripts.Peices
                     }
                 }
             }
+
+            foreach (Vector2 candidateMove in candidateMoves)
+            {
+                if (state.canMoveTo(candidateMove, this.peiceColor))
+                {
+                    results.Add(candidateMove);
+                }
+            }
+
+            return results;
+        }
+
+        public override List<Vector2> getControlledSquares(GameState state)
+        {
+            List<Vector2> results = new List<Vector2>();
+            List<Vector2> candidateMoves = new List<Vector2>();
+            candidateMoves.Add(this.peicePosition + new Vector2(1, 0));
+            candidateMoves.Add(this.peicePosition + new Vector2(-1, 0));
+            candidateMoves.Add(this.peicePosition + new Vector2(1, 1));
+            candidateMoves.Add(this.peicePosition + new Vector2(-1, 1));
+            candidateMoves.Add(this.peicePosition + new Vector2(1, -1));
+            candidateMoves.Add(this.peicePosition + new Vector2(-1, -1));
+            candidateMoves.Add(this.peicePosition + new Vector2(0, -1));
+            candidateMoves.Add(this.peicePosition + new Vector2(0, 1));
 
             foreach (Vector2 candidateMove in candidateMoves)
             {

@@ -77,11 +77,11 @@ public class GameState
         Vector2 kingPosition = king.peicePosition;
         bool result = false;
 
-        List<Move> moves = getAllMoves(color == COLOR.WHITE ? COLOR.BLACK : COLOR.WHITE);
+        List<Vector2> moves = getControlledSquares(color == COLOR.WHITE ? COLOR.BLACK : COLOR.WHITE);
 
-        foreach (Move move in moves)
+        foreach (Vector2 move in moves)
         {
-            if (move.toRow == kingPosition.x && move.toCol == kingPosition.y)
+            if (move == kingPosition)
             {
                 result = true;
                 break;
@@ -93,12 +93,53 @@ public class GameState
 
     public bool isCheckmate(COLOR color)
     {
-        bool result = false;
+        //I need to go through every peice and check to see if they have any moves that remove the check. 
+        bool result = true;
 
         if (inCheck(color))
         {
+            //List<Move> oppositeMoves = getAllMoves(color == COLOR.WHITE ? COLOR.BLACK : COLOR.WHITE);
             List<Move> moves = getAllMoves(color);
 
+            foreach (Move move in moves)
+            {
+                GameState testState = copyBoardState();
+                testState.movePeice(move.fromRow, move.fromCol, move.toRow, move.toCol);
+                testState.boardState[move.toRow, move.toCol].peicePosition = new Vector2(move.toRow, move.toCol);
+
+                if (!testState.inCheck(color))
+                {
+                    result = false;
+                    break;
+                }
+            }
+
+        } else
+        {
+            result = false;
+        }
+
+        return result;
+    }
+
+    public List<Vector2> getControlledSquares(COLOR color)
+    {
+        List<Vector2> result = new List<Vector2>();
+
+        for (int r = 0; r < 8; r++)
+        {
+            for (int c = 0; c < 8; c++)
+            {
+                if (boardState[r, c] != null && boardState[r, c].peiceColor == color)
+                {
+                    List<Vector2> squares = boardState[r, c].getControlledSquares(this);
+
+                    foreach (Vector2 s in squares)
+                    {
+                        result.Add(s);
+                    }
+                }
+            }
         }
 
         return result;

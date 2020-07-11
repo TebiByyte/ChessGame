@@ -78,6 +78,27 @@ namespace Assets.Scripts.Peices
             return results;
         }
 
+        public override List<Vector2> getControlledSquares(GameState state)
+        {
+            List<Vector2> results = new List<Vector2>();
+            List<Vector2> candidateMoves = new List<Vector2>();
+
+            float sign = peiceColor == COLOR.WHITE ? -1 : 1;
+
+            candidateMoves.Add(this.peicePosition + new Vector2(sign, -1));
+            candidateMoves.Add(this.peicePosition + new Vector2(sign, 1));
+
+            foreach (Vector2 candidateMove in candidateMoves)
+            {
+                if (GameState.squareIsOnBoard(candidateMove) && !state.squareFilled(candidateMove))
+                {
+                    results.Add(candidateMove);
+                }
+            }
+
+            return results;
+        }
+
         public Pawn(COLOR color) : base(color, TYPE.PAWN)
         {
         }

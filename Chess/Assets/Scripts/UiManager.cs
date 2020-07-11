@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
 {
@@ -9,6 +10,13 @@ public class UiManager : MonoBehaviour
     public GameObject settingsMenu;
     public GameObject cameraController;
     public GameObject exitButton;
+    public GameObject gameOverText;
+
+    public void notifyGameOver(string message)
+    {
+        gameOverText.SetActive(true);
+        gameOverText.GetComponent<Text>().text = message;
+    }
 
     public void onPlayClick()
     {
@@ -20,8 +28,8 @@ public class UiManager : MonoBehaviour
 
     public void onSettingsClick()
     {
-        mainMenu.SetActive(false);
-        settingsMenu.SetActive(true);
+        //mainMenu.SetActive(false);
+        //settingsMenu.SetActive(true);
     }
 
     public void onExitClick()
@@ -35,5 +43,6 @@ public class UiManager : MonoBehaviour
         exitButton.SetActive(false);
         cameraController.GetComponent<CameraController>().canMove = false;
         camera.GetComponent<MainGame>().clearBoard();
+        gameOverText.SetActive(false);
     }
 }

@@ -15,6 +15,7 @@ public class MainGame : MonoBehaviour
     public Material WhiteMat;
     public Material BlackMat;
     public Material SelectedMaterial;
+    public GameObject UiManager; 
 
     GameState state;
     public Camera camera;
@@ -201,10 +202,6 @@ public class MainGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Debug.Log(state.inCheck(COLOR.WHITE));
-        }
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -351,6 +348,13 @@ public class MainGame : MonoBehaviour
                         }
                     }
                 }
+            }
+
+            if (state!= null && state.isCheckmate(state.turn))
+            {
+                string message = (state.turn == COLOR.WHITE ? COLOR.BLACK : COLOR.WHITE) + " wins by checkmate!";
+
+                UiManager.GetComponent<UiManager>().notifyGameOver(message);
             }
         }
     }

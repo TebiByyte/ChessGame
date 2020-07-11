@@ -35,6 +35,11 @@ namespace Assets.Scripts.Peices
             return results;
         }
 
+        public override List<Vector2> getControlledSquares(GameState state)
+        {
+            return getMoves(state);
+        }
+
         public Rook(COLOR color) : base(color, TYPE.ROOK)
         {
         }

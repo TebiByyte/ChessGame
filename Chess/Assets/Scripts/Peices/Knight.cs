@@ -37,6 +37,11 @@ namespace Assets.Scripts.Peices
             
         }
 
+        public override List<Vector2> getControlledSquares(GameState state)
+        {
+            return getMoves(state);
+        }
+
         public Knight(COLOR color) : base(color, TYPE.KNIGHT)
         {
         }
