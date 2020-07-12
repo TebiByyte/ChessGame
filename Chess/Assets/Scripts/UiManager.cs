@@ -5,9 +5,8 @@ using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
 {
-    public Camera camera;
+    public new Camera camera;
     public GameObject mainMenu;
-    public GameObject settingsMenu;
     public GameObject cameraController;
     public GameObject exitButton;
     public GameObject gameOverText;
@@ -28,8 +27,7 @@ public class UiManager : MonoBehaviour
 
     public void onSettingsClick()
     {
-        //mainMenu.SetActive(false);
-        //settingsMenu.SetActive(true);
+
     }
 
     public void onExitClick()

@@ -15,10 +15,12 @@ public class MainGame : MonoBehaviour
     public Material WhiteMat;
     public Material BlackMat;
     public Material SelectedMaterial;
-    public GameObject UiManager; 
+    public GameObject UiManager;
+    public float AnimationTime = 1;
+    public AudioSource clack;
 
     GameState state;
-    public Camera camera;
+    public new Camera camera;
     private ChessPiece selectedPeice;
     private List<GameObject> movePreviews;
     private List<Vector2> moves;
@@ -171,7 +173,7 @@ public class MainGame : MonoBehaviour
                 if (peice != null)
                 {
                     GameObject peiceModel = peice.peiceModel;
-                    peiceModel.transform.position = getPosition(peice.peicePosition);
+                    peiceModel.GetComponent<PeiceComponent>().startLerp(peiceModel.transform.position, getPosition(peice.peicePosition), AnimationTime);
                 }
             }
         }
@@ -205,6 +207,8 @@ public class MainGame : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
+
+
             RaycastHit hit;
 
             Ray ray = camera.ScreenPointToRay(Input.mousePosition);
@@ -212,9 +216,10 @@ public class MainGame : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
 
-
                 if (hit.transform.name == "PREVIEW")
                 {
+
+                    clack.Play();
                     Vector2 to = hit.transform.GetComponent<PeiceComponent>().boardPosition;
                     int toR = (int)to.x;
                     int toC = (int)to.y;
