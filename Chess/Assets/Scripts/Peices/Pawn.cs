@@ -90,7 +90,7 @@ namespace Assets.Scripts.Peices
 
             foreach (Vector2 candidateMove in candidateMoves)
             {
-                if (GameState.squareIsOnBoard(candidateMove) && !state.squareFilled(candidateMove))
+                if (GameState.squareIsOnBoard(candidateMove))
                 {
                     results.Add(candidateMove);
                 }

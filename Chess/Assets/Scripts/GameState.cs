@@ -73,18 +73,21 @@ public class GameState
 
     public bool inCheck(COLOR color)
     {
-        King king = getKing(color);
-        Vector2 kingPosition = king.peicePosition;
         bool result = false;
-
-        List<Vector2> moves = getControlledSquares(color == COLOR.WHITE ? COLOR.BLACK : COLOR.WHITE);
-
-        foreach (Vector2 move in moves)
+        King king = getKing(color);
+        if (king != null)
         {
-            if (move == kingPosition)
+            Vector2 kingPosition = king.peicePosition;
+
+            List<Vector2> moves = getControlledSquares(color == COLOR.WHITE ? COLOR.BLACK : COLOR.WHITE);
+
+            foreach (Vector2 move in moves)
             {
-                result = true;
-                break;
+                if (move == kingPosition)
+                {
+                    result = true;
+                    break;
+                }
             }
         }
 

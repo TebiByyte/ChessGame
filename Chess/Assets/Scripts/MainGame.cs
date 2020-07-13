@@ -7,6 +7,7 @@ using UnityEngine;
 public class MainGame : MonoBehaviour
 {
     public GameObject KnightPrefab;
+    public GameObject Selector;
     public GameObject PawnPrefab;
     public GameObject BishopPrefab;
     public GameObject RookPrefab;
@@ -17,7 +18,7 @@ public class MainGame : MonoBehaviour
     public Material SelectedMaterial;
     public GameObject UiManager;
     public float AnimationTime = 1;
-    public AudioSource clack;
+    public AudioSource slide;
 
     GameState state;
     public new Camera camera;
@@ -204,22 +205,31 @@ public class MainGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        RaycastHit hit;
+
+        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (selectedPeice != null && hit.transform.name != "PREVIEW")
+            {
+                Selector.transform.position = selectedPeice.peiceModel.transform.position + 0.02f * Vector3.up;
+            }
+            else
+            {
+                Selector.transform.position = hit.transform.position + 0.02f * Vector3.up;
+            }
+        }
 
         if (Input.GetMouseButtonDown(0))
         {
-
-
-            RaycastHit hit;
-
-            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-
             if (Physics.Raycast(ray, out hit))
             {
 
                 if (hit.transform.name == "PREVIEW")
                 {
 
-                    clack.Play();
+                    slide.Play();
                     Vector2 to = hit.transform.GetComponent<PeiceComponent>().boardPosition;
                     int toR = (int)to.x;
                     int toC = (int)to.y;
@@ -262,6 +272,19 @@ public class MainGame : MonoBehaviour
                             int side = fromC - toC;
                             state.removePiece(new Vector2(fromR, fromC - side));
                         }
+                    }
+
+                    //Promotion. Eventually bring up a GUI to select the promotion piece
+                    if (selectedPeice.peiceType == TYPE.PAWN && (toR == 0 || toR == 7))
+                    {
+                        ChessPiece piece = new Queen(state.turn);
+                        GameObject model = createPeice(TYPE.QUEEN, state.turn);
+                        model.transform.Rotate(-90, piece.peiceRotation + (piece.peiceColor == COLOR.BLACK ? 180 : 0), 0);
+                        model.transform.localScale = new Vector3(200, 200, 200);
+                        piece.peiceModel = model;
+                        state.removePiece(new Vector2(fromR, fromC));
+                        state.boardState[fromR, fromC] = piece;
+                        updateBoard();
                     }
 
                     state.movePeice(fromR, fromC, toR, toC);
